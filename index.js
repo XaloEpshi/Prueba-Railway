@@ -1,10 +1,7 @@
 const express = require('express');
 const { WebSocketServer } = require('ws');
 const http = require('http');
-const path = require('path');
-const mysql = require('mysql2'); // Necesario para la conexión a la base de datos
-require('dotenv').config(); // Para cargar las variables de entorno
-const cors = require('cors');
+const path = require('path'); // Necesario para usar sendFile
 
 // Crear una aplicación Express
 const app = express();
@@ -14,21 +11,6 @@ const server = http.createServer(app);
 
 // Crear un servidor WebSocket que escucha en el servidor HTTP
 const wss = new WebSocketServer({ server });
-
-// Configuración de la conexión a la base de datos usando mysql2
-const pool = mysql.createPool({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
-
-// Usamos el pool para hacer consultas
-const db = pool.promise();
 
 // Configurar WebSocket para manejar mensajes
 wss.on('connection', (ws) => {
@@ -49,6 +31,7 @@ wss.on('connection', (ws) => {
     console.log('Cliente desconectado');
   });
 });
+
 
 // Ruta para obtener todos los eventos
 app.get('/events', async (req, res) => {
@@ -72,3 +55,5 @@ app.get('/', (req, res) => {
 server.listen(3000, () => {
   console.log('Servidor Express y WebSocket corriendo en http://localhost:3000');
 });
+
+
