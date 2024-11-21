@@ -4,6 +4,7 @@ const http = require('http');
 const path = require('path');
 const mysql = require('mysql2'); // Necesario para la conexión a la base de datos
 require('dotenv').config(); // Para cargar las variables de entorno
+const cors = require('cors');
 
 // Crear una aplicación Express
 const app = express();
@@ -50,7 +51,7 @@ wss.on('connection', (ws) => {
 });
 
 // Ruta para obtener todos los eventos
-app.get('/api/events', async (req, res) => {
+app.get('/events', async (req, res) => {
   try {
     const [results] = await db.query('SELECT * FROM agenda_diaria');
     if (results.length === 0) {
@@ -67,8 +68,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html')); // Ruta al archivo HTML
 });
 
-// Iniciar el servidor HTTP en el puerto dinámico o 3000
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  console.log(`Servidor Express y WebSocket corriendo en http://localhost:${port}`);
+// Iniciar el servidor HTTP en el puerto 3000
+server.listen(3000, () => {
+  console.log('Servidor Express y WebSocket corriendo en http://localhost:3000');
 });
