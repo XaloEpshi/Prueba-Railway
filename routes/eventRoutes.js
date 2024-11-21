@@ -3,7 +3,7 @@ const pool = require('./config/db');
 const app = express();
 
 // Ruta para obtener todos los eventos
-app.get('/events', async (req, res) => {
+app.get('/api/events', async (req, res) => {
   try {
     const [results] = await pool.query('SELECT * FROM agenda_diaria');
     if (results.length === 0) {
