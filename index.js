@@ -3,6 +3,9 @@ const { WebSocketServer } = require('ws');
 const http = require('http');
 const path = require('path'); // Necesario para usar sendFile
 
+// Declara el puerto usando la variable de entorno o 3000 como valor por defecto
+const port = process.env.PORT || 3000;
+
 // Crear una aplicación Express
 const app = express();
 
@@ -32,7 +35,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-
 // Ruta para obtener todos los eventos
 app.get('/events', async (req, res) => {
   try {
@@ -51,9 +53,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html')); // Ruta al archivo HTML
 });
 
-// Iniciar el servidor HTTP en el puerto 3000
-server.listen(3000, () => {
-  console.log('Servidor Express y WebSocket corriendo en http://localhost:3000');
+// Iniciar el servidor HTTP en el puerto dinámico
+server.listen(port, () => {
+  console.log(`Servidor Express y WebSocket corriendo en http://localhost:${port}`);
 });
-
-
